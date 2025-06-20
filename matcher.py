@@ -53,8 +53,8 @@ def compute_similarity(resume_text, jd):
   corpus = [cleaned_resume, cleaned_jd]
   vectorizer = TfidfVectorizer(ngram_range=(1,2))
   tfidf_matrix = vectorizer.fit_transform(corpus)
-  similarity_scores = cosine_similarity(tfidf_matrix[0], tfidf_matrix[1][0])
-  return similarity_scores
+  similarity_scores = cosine_similarity(tfidf_matrix[0], tfidf_matrix[1])
+  return similarity_scores[0][0]
 
 
 def missing_keywords(resume_text, jd_text):
