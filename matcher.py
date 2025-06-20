@@ -48,7 +48,7 @@ def preprocess_text(text):
 
 def compute_similarity(resume_text, jd):
   cleaned_resume = preprocess_text(resume_text)
-  cleaned_jd = preprocess_text(job_description)
+  cleaned_jd = preprocess_text(jd)
 
   corpus = [cleaned_resume, cleaned_jd]
   vectorizer = TfidfVectorizer(ngram_range=(1,2))
