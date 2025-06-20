@@ -6,7 +6,7 @@ st.title("Resume Matcher")
 
 uploaded_file = st.file_uploader("Upload your resume", type="pdf")
 jd_input = st.text_area("Paste your Job Description here")
-jd_text = st.text_area("Paste the job description here")
+
 
 if uploaded_file and jd_input:
     with st.spinner("Analysizing your resume..."):

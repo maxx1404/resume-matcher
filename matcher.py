@@ -27,7 +27,7 @@ nltk.download('omw-1.4')
 # Extracting text from Resume
 
 def extract_text_from_resume(pdf_file):
-  doc = fitz.open(stream = pdf.file_read(), filetype = "pdf")
+  doc = fitz.open(stream = pdf_file.read(), filetype = "pdf")
   text_in_resume = ""
   for page in doc:
     text_in_resume = text_in_resume + page.get_text()
