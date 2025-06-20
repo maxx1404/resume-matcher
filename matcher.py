@@ -9,41 +9,30 @@ Original file is located at
 
 # Installing all required libraries
 
-"""https://pymupdf.readthedocs.io/en/latest/ -- PyMuPDF documenation
-
-"""
-
 #import the libraries
 import fitz
 import nltk
 import re
 from nltk.corpus import stopwords
-from google.colab import files
-
-resume_file = files.upload()
-resume_pdf = list(resume_file.keys())[0]
-
-
-
-# Extracting text from Resume
-
-def extract_text_from_resume(file_path):
-  doc = fitz.open(file_path)
-  text_in_resume = ""
-  for page in doc:
-    text_in_resume = text_in_resume + page.get_text()
-  return text_in_resume
-
-resume_text = extract_text_from_resume(resume_pdf)
-
-
+from nltk.stem import WordNetLemmatizer
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
 # Pre Process Text
 nltk.download('stopwords')
 nltk.download('wordnet')
 nltk.download('omw-1.4')
 
-from nltk.stem import WordNetLemmatizer
+
+# Extracting text from Resume
+
+def extract_text_from_resume(pdf_file):
+  doc = fitz.open(stream = pdf.file_read(), filetype = "pdf")
+  text_in_resume = ""
+  for page in doc:
+    text_in_resume = text_in_resume + page.get_text()
+  return text_in_resume
+
 
 def preprocess_text(text):
   text = re.sub(r'\W+', ' ', text.lower())
@@ -54,23 +43,8 @@ def preprocess_text(text):
     if w not in stopwords.words('english'):
       lemma = lemmatizer.lemmatize(w)
       words_after_stopwords.append(lemma)
-
-
   return ' '.join(words_after_stopwords)
 
-cleaned_resume = preprocess_text(resume_text)
-
-# Job description
-
-job_description = """Looking for an. AI/ML student with CGPA above 9, who has worked on ambulance routing systems using Python and Streamlit. Should have collaborated with IISc/CDPG and led events like Code Red 25. Experience as IEEE event head and Vice President at Entrepreneurship Cell is required. Skills in NLP, resume classification, TF-IDF vectorization, and cosine similarity are essential.
-"""
-
-cleaned_jd = preprocess_text(job_description)
-
-
-
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
 
 def compute_similarity(resume_text, jd):
   cleaned_resume = preprocess_text(resume_text)
@@ -83,14 +57,8 @@ def compute_similarity(resume_text, jd):
   return similarity_scores
 
 
-
-compute_similarity(resume_text, job_description)
-
 def missing_keywords(resume_text, jd_text):
   resume_tokens = set( preprocess_text(resume_text).split())
   jd_tokens = set(preprocess_text(jd_text).split())
   missing = jd_tokens - resume_tokens
   return list(missing)[:5]
-
-missing_keywords(resume_text, job_description)
-
