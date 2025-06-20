@@ -1,5 +1,5 @@
 import streamlit as st
-from matcher.py import extract_text_from_resume, compute_similarity, missing_keywords
+from matcher import extract_text_from_resume, compute_similarity, missing_keywords
 
 st.set_page_config(page_title = "Resume Matcher", layout = "centered")
 st.title("Resume Matcher")
