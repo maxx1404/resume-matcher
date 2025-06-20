@@ -4,7 +4,8 @@ from matcher.py import extract_text_from_resume, compute_similarity, missing_key
 st.set_page_config(page_title = "Resume Matcher", layout = "centered")
 st.title("Resume Matcher")
 
-uploaded_file = st.file_uploader("Upload your resume", type = "pdf"), jd_input = st.text_area("Paste your Job Description here")
+uploaded_file = st.file_uploader("Upload your resume", type="pdf")
+jd_input = st.text_area("Paste your Job Description here")
 jd_text = st.text_area("Paste the job description here")
 
 if uploaded_file and jd_input:
