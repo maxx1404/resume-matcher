@@ -1,30 +1,39 @@
 import streamlit as st
+import pandas as pd
 from matcher import extract_text_from_resume, compute_similarity, missing_keywords
 
 st.set_page_config(page_title = "Resume Matcher", layout = "centered")
 st.title("Resume Matcher")
 
-uploaded_file = st.file_uploader("Upload your resume(PDF)", type="pdf")
+uploaded_files = st.file_uploader("Upload multiple resumes(PDF)", type="pdf", accept_multiple_files = True)
 jd_input = st.text_area("Paste your Job Description here")
 
 
-if uploaded_file and jd_input:
-    if st.button("Analyze Resume"):
-        with st.spinner("Analysizing your resume..."):
-            resume_text = extract_text_from_resume(uploaded_file)
-            score = compute_similarity(resume_text, jd_input)
-            missing = missing_keywords(resume_text, jd_input)
-        
-        st.success("Match Completed")
-        st.markdown(f' Match SCORE {score:.2f}')
-        if score >= 0.7:
-            st.success("Strong Match")
-        elif score >=0.4:
-            st.success("Decent match")
-        else:
-            st.success("Poor Match")
+if uploaded_files and jd_input:
+    if st.button("Analyze All Resumes"):
+        results = []
 
-        st.markdown("Top 5 missing keywrds from youre resume")
-        st.code(", ".join(missing), language='markdown')
+        with st.spinner("Analyzing your resume..."):
+            for uploaded_file in uploaded_files:
+                resume_text = extract_text_from_resume(uploaded_file)
+                score = compute_similarity(resume_text, jd_input)
+                missing = missing_keywords(resume_text, jd_input)
 
+                results.append({
+                    "Name": uploaded_file.name,
+                    "Score": round(score,3),
+                    "Top Missing keywords": ', '.join(missing[:5])
+                })
         
+        df = pd.DataFrame(results).sort_values(by="Score", ascending=False)
+
+        st.success("Analysis Completed")
+        st.dataframe(df, use_container_width = True)
+
+        csv = df.to_csv(index=False).encode('utf-8')
+        st.download_button(
+            label = "Download Results as csv",
+            data = csv,
+            file_name = "recruiter_match_results.csv",
+            mime= "text/csv"
+        )
