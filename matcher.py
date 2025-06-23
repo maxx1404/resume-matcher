@@ -17,6 +17,8 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+from sklearn_transformers import SentenceTransformer, util
+model = SentenceTransformer('all-MiniLM-L6-v2')
 
 # Pre Process Text
 nltk.download('stopwords')
@@ -50,11 +52,13 @@ def compute_similarity(resume_text, jd):
   cleaned_resume = preprocess_text(resume_text)
   cleaned_jd = preprocess_text(jd)
 
-  corpus = [cleaned_resume, cleaned_jd]
-  vectorizer = TfidfVectorizer(ngram_range=(1,2))
-  tfidf_matrix = vectorizer.fit_transform(corpus)
-  similarity_scores = cosine_similarity(tfidf_matrix[0], tfidf_matrix[1])
-  return similarity_scores[0][0]
+  resume_embedding  = model.encode(resume_text, convert_to_tensor = True)
+  jd_embedding  = model.encode(jd_text, convert_to_tensor = True)
+
+  similarity_scores = util.cos_sim(resume_embedding, jd_embedding)[0][0].item()
+  return similarity_scores
+
+
 
 
 def missing_keywords(resume_text, jd_text):
