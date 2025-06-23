@@ -52,8 +52,8 @@ def compute_similarity(resume_text, jd):
   cleaned_resume = preprocess_text(resume_text)
   cleaned_jd = preprocess_text(jd)
 
-  resume_embedding  = model.encode(resume_text, convert_to_tensor = True)
-  jd_embedding  = model.encode(jd_text, convert_to_tensor = True)
+  resume_embedding  = model.encode(cleaned_resume, convert_to_tensor = True)
+  jd_embedding  = model.encode(cleaned_jd, convert_to_tensor = True)
 
   similarity_scores = util.cos_sim(resume_embedding, jd_embedding)[0][0].item()
   return similarity_scores
