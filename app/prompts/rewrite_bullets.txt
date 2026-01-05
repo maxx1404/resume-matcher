@@ -1,0 +1,6 @@
+Return JSON only:
+{ "rewrites": ["...","..."] }
+
+Rewrite up to 5 bullets to be impact-focused and ATS-optimized. Replace vague verbs with specific, quantified outcomes where possible.
+Bullets: {{$bullets}}
+Job: {{$job}}

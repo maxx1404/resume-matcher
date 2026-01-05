@@ -1,5 +1,14 @@
 streamlit
-PyMuPDF
+pdfplumber
 nltk
+semantic-kernel>=0.7.0
+openai>=1.0.0
+python-dotenv
+numpy
 scikit-learn
-sentence-transformers
+pandas
+python-multipart
+fastapi[all]
+uvicorn
+python-docx
+weasyprint

@@ -1,0 +1,11 @@
+You will return valid JSON only.
+
+Compare Resume vs Job Description and return:
+{
+ "match_score": "<0-100>",
+ "missing_skills": ["...","..."],
+ "recommended_learning": ["...","..."]
+}
+
+Resume: {{$resume}}
+Job: {{$job}}

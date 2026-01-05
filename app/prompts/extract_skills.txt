@@ -1,0 +1,4 @@
+Analyze the resume text and return a comma-separated list of the candidate's key technical and soft skills.
+Return only the list (no explanations).
+
+Resume: {{$resume}}
